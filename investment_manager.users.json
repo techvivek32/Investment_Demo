@@ -1,0 +1,60 @@
+[{
+  "_id": {
+    "$oid": "68f0a615d230cc4a63a48a27"
+  },
+  "name": "Admin User",
+  "email": "admin@test.com",
+  "passwordHash": "$2b$10$OqKn1TLoi6C3rSqzmOOjy.C1D9wPFy3OqYWx7HTWp7a2nHfp68986",
+  "role": "ADMIN",
+  "emailVerified": true,
+  "kyc": {
+    "verified": false
+  },
+  "createdAt": {
+    "$date": "2025-10-16T08:00:21.814Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-16T08:00:21.814Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f0a616d230cc4a63a48a2e"
+  },
+  "name": "Business Owner",
+  "email": "business@test.com",
+  "passwordHash": "$2b$10$22IbfxcVy57/CGwToYNUy.jnLlGt4sZfgO3FFTg/ZOyUmu6aWN8aO",
+  "role": "BUSINESS_OWNER",
+  "emailVerified": true,
+  "kyc": {
+    "verified": false
+  },
+  "createdAt": {
+    "$date": "2025-10-16T08:00:22.415Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-16T08:00:22.415Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68f0a616d230cc4a63a48a31"
+  },
+  "name": "Investor User",
+  "email": "investor@test.com",
+  "passwordHash": "$2b$10$9VGUFc1MyymhUpDd6OagB.OL650jSgSXXAXNydtV4OwjkSw4qXw2O",
+  "role": "INVESTOR",
+  "emailVerified": true,
+  "kyc": {
+    "verified": false
+  },
+  "createdAt": {
+    "$date": "2025-10-16T08:00:22.544Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-16T08:00:22.544Z"
+  },
+  "__v": 0
+}]
