@@ -9,14 +9,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  experimental: {
-    serverComponentsExternalPackages: ['mime'],
-  },
-  api: {
-    bodyParser: {
-      sizeLimit: false,
-    },
-  },
+  serverExternalPackages: ['mime'],
 }
 
 export default nextConfig
