@@ -17,6 +17,7 @@ export default function BusinessDetailPage() {
   const params = useParams()
   const router = useRouter()
   const { data: business, mutate } = useSWR(`/api/admin/my-businesses/${params.id}`, fetcher)
+  const { data: investments = [] } = useSWR(`/api/investments?business=${params.id}`, fetcher)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState<any>(null)
 
@@ -126,6 +127,49 @@ export default function BusinessDetailPage() {
               </Button>
             )}
           </form>
+        </CardContent>
+      </Card>
+
+      <Card className="shadow-sm">
+        <CardHeader>
+          <CardTitle>Investors</CardTitle>
+          <p className="text-sm text-muted-foreground">People who have invested in this business</p>
+        </CardHeader>
+        <CardContent>
+          {investments.length > 0 ? (
+            <div className="space-y-4">
+              {investments.map((investment: any) => (
+                <div key={investment._id} className="flex items-center justify-between p-4 border rounded-lg">
+                  <div className="flex items-center space-x-4">
+                    <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                      <span className="text-blue-600 font-semibold text-sm">
+                        {investment.investor?.name?.charAt(0) || 'I'}
+                      </span>
+                    </div>
+                    <div>
+                      <p className="font-medium">{investment.investor?.name || 'Unknown Investor'}</p>
+                      <p className="text-sm text-muted-foreground">{investment.investor?.email}</p>
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold">${investment.amount?.toLocaleString() || 0}</p>
+                    <p className="text-sm text-muted-foreground">{investment.ownershipPercent || 0}% ownership</p>
+                    <span className={`inline-block px-2 py-1 text-xs rounded-full ${
+                      investment.status === 'ACTIVE' ? 'bg-green-100 text-green-800' : 
+                      investment.status === 'PENDING' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-gray-100 text-gray-800'
+                    }`}>
+                      {investment.status}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <p className="text-muted-foreground">No investors yet</p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

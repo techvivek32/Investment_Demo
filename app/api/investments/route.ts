@@ -4,15 +4,28 @@ import { connectDB } from "@/lib/db"
 import { Investment } from "@/models/investment"
 import { Business } from "@/models/business"
 
-export async function GET() {
+export async function GET(req: Request) {
   try {
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     await connectDB()
+    
+    const { searchParams } = new URL(req.url)
+    const investorId = searchParams.get('investor')
+    const businessId = searchParams.get('business')
+    
     const role = (session.user as any).role
     const query: any = {}
-    if (role === "INVESTOR") query.investor = (session.user as any).id
-    const items = await Investment.find(query).populate("business").sort({ createdAt: -1 }).limit(200)
+    
+    if (investorId && role === "ADMIN") {
+      query.investor = investorId
+    } else if (businessId && role === "ADMIN") {
+      query.business = businessId
+    } else if (role === "INVESTOR") {
+      query.investor = (session.user as any).id
+    }
+    
+    const items = await Investment.find(query).populate("business").populate("investor", "name email").sort({ createdAt: -1 }).limit(200)
     return NextResponse.json(items)
   } catch (e: any) {
     return NextResponse.json({ error: e.message || "Failed to fetch investments" }, { status: 500 })

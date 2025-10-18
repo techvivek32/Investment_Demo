@@ -9,8 +9,9 @@ const KYCSchema = new Schema(
     gst: String,
     passport: String,
     verified: { type: Boolean, default: false },
+    documents: { type: Schema.Types.Mixed, default: {} }
   },
-  { _id: false },
+  { _id: false, strict: false },
 )
 
 const UserSchema = new Schema(
