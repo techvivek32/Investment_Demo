@@ -6,6 +6,7 @@ const BusinessSchema = new Schema(
     description: String,
     type: String, // industry/type
     location: String,
+    mapLink: String,
     registrationNumber: String,
     owner: { type: Types.ObjectId, ref: "User" }, // admin who owns this business
     managers: [{ type: Types.ObjectId, ref: "User" }],

@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { ArrowLeft, Save } from "lucide-react"
+import { ArrowLeft, Save, FileText, MapPin, Upload, Trash2 } from "lucide-react"
 import Link from "next/link"
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json())
@@ -18,8 +18,10 @@ export default function BusinessDetailPage() {
   const router = useRouter()
   const { data: business, mutate } = useSWR(`/api/admin/my-businesses/${params.id}`, fetcher)
   const { data: investments = [] } = useSWR(`/api/investments?business=${params.id}`, fetcher)
+  const { data: documents = [], mutate: mutateDocuments } = useSWR(`/api/documents?businessId=${params.id}`, fetcher)
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState<any>(null)
+  const [uploading, setUploading] = useState(false)
 
   if (!business) return <div>Loading...</div>
 
@@ -38,6 +40,40 @@ export default function BusinessDetailPage() {
     mutate()
     setLoading(false)
     setForm(null)
+  }
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || [])
+    if (files.length === 0) return
+
+    setUploading(true)
+    try {
+      for (const file of files) {
+        const fd = new FormData()
+        fd.append("file", file)
+        fd.append("businessId", params.id as string)
+        fd.append("tag", "business")
+        
+        await fetch("/api/uploads", { method: "POST", body: fd })
+      }
+      mutateDocuments()
+    } catch (error) {
+      console.error("Upload error:", error)
+    } finally {
+      setUploading(false)
+      e.target.value = ''
+    }
+  }
+
+  const handleDeleteDocument = async (docId: string) => {
+    if (!confirm('Are you sure you want to delete this document?')) return
+    
+    try {
+      await fetch(`/api/documents/${docId}`, { method: "DELETE" })
+      mutateDocuments()
+    } catch (error) {
+      console.error("Delete error:", error)
+    }
   }
 
   return (
@@ -98,6 +134,16 @@ export default function BusinessDetailPage() {
             </div>
 
             <div className="grid gap-2">
+              <Label htmlFor="mapLink">Map Link</Label>
+              <Input
+                id="mapLink"
+                value={currentForm.mapLink || ""}
+                onChange={(e) => setForm({ ...currentForm, mapLink: e.target.value })}
+                placeholder="Google Maps URL"
+              />
+            </div>
+
+            <div className="grid gap-2">
               <Label htmlFor="registrationNumber">Registration Number</Label>
               <Input
                 id="registrationNumber"
@@ -127,6 +173,106 @@ export default function BusinessDetailPage() {
               </Button>
             )}
           </form>
+        </CardContent>
+      </Card>
+
+      {(business.mapLink || business.location) && (
+        <Card className="shadow-sm">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <MapPin className="h-5 w-5" />
+              Location Map
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="border rounded-md overflow-hidden bg-slate-50">
+              <iframe
+                src={business.mapLink && business.mapLink.includes('embed') 
+                  ? business.mapLink 
+                  : `https://maps.google.com/maps?q=${encodeURIComponent(business.location || '')}&output=embed`}
+                width="100%"
+                height="300"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Business Location Map"
+              />
+            </div>
+          </CardContent>
+        </Card>
+      )}
+
+      <Card className="shadow-sm">
+        <CardHeader>
+          <div className="flex items-center justify-between">
+            <CardTitle className="flex items-center gap-2">
+              <FileText className="h-5 w-5" />
+              Documents
+            </CardTitle>
+            <div className="flex items-center gap-2">
+              <label className="cursor-pointer">
+                <Button variant="outline" size="sm" disabled={uploading} asChild>
+                  <span>
+                    <Upload className="h-4 w-4 mr-2" />
+                    {uploading ? 'Uploading...' : 'Add Documents'}
+                  </span>
+                </Button>
+                <input
+                  type="file"
+                  multiple
+                  className="hidden"
+                  onChange={handleFileUpload}
+                  accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.txt"
+                />
+              </label>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent>
+          {documents.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {documents.map((doc: any) => (
+                <div key={doc._id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
+                  <div className="flex items-center gap-3">
+                    <FileText className="h-8 w-8 text-blue-500" />
+                    <div className="flex-1 min-w-0">
+                      <p className="font-medium truncate">{doc.filename}</p>
+                      <p className="text-sm text-gray-500">
+                        {(doc.size / 1024 / 1024).toFixed(1)}MB
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {new Date(doc.createdAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="mt-3 flex items-center justify-between">
+                    <a
+                      href={doc.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 text-sm underline"
+                    >
+                      View Document
+                    </a>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => handleDeleteDocument(doc._id)}
+                      className="text-red-500 hover:text-red-700 p-1"
+                    >
+                      <Trash2 className="h-3 w-3" />
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-8">
+              <FileText className="h-12 w-12 text-gray-300 mx-auto mb-4" />
+              <p className="text-muted-foreground">No documents uploaded</p>
+            </div>
+          )}
         </CardContent>
       </Card>
 

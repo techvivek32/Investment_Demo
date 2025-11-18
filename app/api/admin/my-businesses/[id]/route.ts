@@ -28,6 +28,7 @@ export async function GET(req: Request, { params }: { params: Promise<{ id: stri
       description: business.description,
       type: business.type,
       location: business.location,
+      mapLink: business.mapLink,
       registrationNumber: business.registrationNumber,
       valuation: business.valuation,
       createdAt: business.createdAt

@@ -1,0 +1,116 @@
+%PDF-1.4
+1 0 obj
+<<
+/Type /Catalog
+/Pages 2 0 R
+>>
+endobj
+
+2 0 obj
+<<
+/Type /Pages
+/Kids [3 0 R]
+/Count 1
+>>
+endobj
+
+3 0 obj
+<<
+/Type /Page
+/Parent 2 0 R
+/MediaBox [0 0 612 792]
+/Contents 4 0 R
+/Resources <<
+/Font <<
+/F1 5 0 R
+>>
+>>
+>>
+endobj
+
+4 0 obj
+<<
+/Length 800
+>>
+stream
+BT
+/F1 18 Tf
+200 750 Td
+(TT) Tj
+/F1 10 Tf
+-150 -25 Td
+(''BahocharKrupa", Vallbh Vidya nagar,) Tj
+50 -15 Td
+(Phone: 09726889892) Tj
+-50 -35 Td
+(================================================) Tj
+/F1 12 Tf
+0 -25 Td
+(Bill No: TT-130) Tj
+250 0 Td
+(Date: 10/29/2025) Tj
+-250 -25 Td
+(Customer: Vadodariya Krima) Tj
+0 -20 Td
+(Phone: +919726889892) Tj
+0 -35 Td
+(================================================) Tj
+/F1 14 Tf
+0 -30 Td
+(ITEMS) Tj
+/F1 10 Tf
+0 -25 Td
+(Item Name                    Qty    Rate    Amount) Tj
+0 -15 Td
+(------------------------------------------------) Tj
+0 -20 Td
+(Black Hoodie                1  Rs 800.00  Rs 800.00) Tj
+0 -25 Td
+(------------------------------------------------) Tj
+/F1 12 Tf
+300 -25 Td
+(Subtotal: Rs  800.00) Tj
+0 -20 Td
+(Tax: Rs 80.00) Tj
+0 -5 Td
+(------------------------) Tj
+/F1 16 Tf
+0 -25 Td
+(TOTAL: Rs  880.00) Tj
+/F1 10 Tf
+-300 -30 Td
+(Payment Method: cash) Tj
+0 -40 Td
+(================================================) Tj
+100 -25 Td
+(Thank you for your business!) Tj
+-50 -15 Td
+(Visit us again!) Tj
+ET
+endstream
+endobj
+
+5 0 obj
+<<
+/Type /Font
+/Subtype /Type1
+/BaseFont /Helvetica
+>>
+endobj
+
+xref
+0 6
+0000000000 65535 f 
+0000000010 00000 n 
+0000000053 00000 n 
+0000000125 00000 n 
+0000000348 00000 n 
+0000000565 00000 n 
+trailer
+<<
+/Size 6
+/Root 1 0 R
+>>
+startxref
+625
+%%EOF
